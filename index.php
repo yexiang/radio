@@ -3,8 +3,6 @@
 <head>
 <meta charset="utf-8">
 <title>Radio</title>
-<style>
-</style>
 </head>
 <body>
 <div id="container">
