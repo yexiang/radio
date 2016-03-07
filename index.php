@@ -2,35 +2,20 @@
 include('config.php');
 	try {
 		$dbh = new PDO($dbh);
-		$dbh->exec("CREATE TABLE list1(
+		$dbh->exec("CREATE TABLE content(
 			id INTEGER PRIMARY KEY,
-			artist varchar(200),
-			art_url varchar(200),
-			track_md5 varchar(100) UNIQUE ON CONFLICT ignore
+			content text
 			)"
 		);
 
-	} catch (PDOException $e) {
-		echo $e->getMessage();
-	}
-?><!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Radio</title>
-<style>
-body{font-size:2em; }
-</style>
-</head>
-<body>
-<div id="container">
+		$content = '
+
 <div class="item">
 <h1 class="title">D100</h1>
 <div class="content"><a href="http://213.229.118.8:8000/Channel1-64MP3">d100 1</a>
 <a href="http://213.229.118.8:8000/Channel3-64MP3">d100 3</a>
 <a href="http://213.229.118.8:8000/Channel4-64MP3">d100 4</a></div>
 </div>
-
 <div class="item">
 <h1 class="title">DBC</h1>
 <div class="content">mp3
@@ -68,6 +53,45 @@ aac
 <a href="http://ctt.rgd.com.cn:8000/fm1052">广东羊城交通广播fm105.2</a>
 <a href="http://ctt.rgd.com.cn:8000/fm936">广东电台南方生活广播fm93.6</a></div>
 </div>
+
+
+		';
+		$stmt = $dbh->prepare("insert into content (content) values(:content)");
+		$data = array(
+			':content' => $content
+		);
+		echo $stmt->execute($data);
+
+
+
+	} catch (PDOException $e) {
+		echo $e->getMessage();
+	}
+?><!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Radio</title>
+<style>
+body{font-size:2em; }
+</style>
+</head>
+<body>
+<div id="container">
+
+<?php
+try {
+	$dbh = new PDO($dbh);
+	$stmt = $dbh->prepare('select content from content order by id desc limit 1');
+	$stmt->execute();
+	$items = $stmt->fetchAll();
+} catch (PDOException $e) {
+	echo $e->getMessage();
+}
+$dbh = NULL;
+?>
+
+<?php echo $items[0]['content']?>
 
 </div>
 </body>
