@@ -1,12 +1,18 @@
 <?php
 include('config.php');
 	try {
-		$dbh = new PDO($dbh);
 		$dbh->exec("CREATE TABLE content(
 			id INTEGER PRIMARY KEY,
 			content text
 			)"
 		);
+
+		$content = $_POST['content'];
+		$stmt = $dbh->prepare("update content set content = :content where id = 1");
+		$data = array(
+			':content' => $content
+		);
+		$stmt->execute($data);
 
 		$stmt = $dbh->prepare('select content from content where id = 1');
 		$stmt->execute();
@@ -23,14 +29,14 @@ include('config.php');
 <meta charset="utf-8">
 <title>Radio</title>
 <style>
-body{font-size:2em; }
+body{font-size:1em; }
 </style>
 </head>
 <body>
 <div id="container">
-
-<?php echo $items[0]['content']?>
-
+<form method="post" action="">
+	<textarea name="content" rows="" cols=""><?php echo $items[0]['content']?></textarea>
+</form>
 </div>
 </body>
 </html>
