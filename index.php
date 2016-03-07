@@ -1,4 +1,19 @@
-<!doctype html>
+<?php
+include('config.php');
+	try {
+		$dbh = new PDO($dbh);
+		$dbh->exec("CREATE TABLE list1(
+			id INTEGER PRIMARY KEY,
+			artist varchar(200),
+			art_url varchar(200),
+			track_md5 varchar(100) UNIQUE ON CONFLICT ignore
+			)"
+		);
+
+	} catch (PDOException $e) {
+		echo $e->getMessage();
+	}
+?><!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
