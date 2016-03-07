@@ -8,6 +8,13 @@ include('config.php');
 			)"
 		);
 
+		$content = '';
+		$stmt = $dbh->prepare("insert into content (content) values(:content)");
+		$data = array(
+			':content' => $content
+		);
+		$stmt->execute($data);
+
 		$content = '
 
 <div class="item">
@@ -56,13 +63,13 @@ aac
 
 
 		';
-		$stmt = $dbh->prepare("insert into content (content) values(:content)");
+		$stmt = $dbh->prepare("update content set content = :content where id = 1");
 		$data = array(
 			':content' => $content
 		);
-		echo $stmt->execute($data);
+		$stmt->execute($data);
 
-		$stmt = $dbh->prepare('select content from content order by id desc limit 1');
+		$stmt = $dbh->prepare('select content from content where id = 1');
 		$stmt->execute();
 		$items = $stmt->fetchAll();
 
