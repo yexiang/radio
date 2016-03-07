@@ -62,7 +62,11 @@ aac
 		);
 		echo $stmt->execute($data);
 
+		$stmt = $dbh->prepare('select content from content order by id desc limit 1');
+		$stmt->execute();
+		$items = $stmt->fetchAll();
 
+		$dbh = NULL;
 
 	} catch (PDOException $e) {
 		echo $e->getMessage();
@@ -78,18 +82,6 @@ body{font-size:2em; }
 </head>
 <body>
 <div id="container">
-
-<?php
-try {
-	$dbh = new PDO($dbh);
-	$stmt = $dbh->prepare('select content from content order by id desc limit 1');
-	$stmt->execute();
-	$items = $stmt->fetchAll();
-} catch (PDOException $e) {
-	echo $e->getMessage();
-}
-$dbh = NULL;
-?>
 
 <?php echo $items[0]['content']?>
 
